@@ -7,11 +7,13 @@ daemon status, and provides actionable fix suggestions.
 
 from __future__ import annotations
 
+import asyncio
 import importlib
+import importlib.util
+import inspect
 import shutil
 import sys
 from dataclasses import dataclass
-
 import httpx
 
 from client.cache import CacheManager
@@ -47,7 +49,11 @@ class Doctor:
         ]
         for check in checks:
             try:
-                result = await check() if asyncio.iscoroutinefunction(check) else check()
+                res = check()
+                if inspect.isawaitable(res):
+                    result = await res
+                else:
+                    result = res
                 self.results.append(result)
             except Exception as e:
                 self.results.append(CheckResult(name=check.__name__, passed=False, message=str(e)))
@@ -135,6 +141,3 @@ class Doctor:
                 console.print(f"      [cpip.dim]fix: {r.fix}[/cpip.dim]")
         console.print(f"\n  [cpip.dim]{passed}/{len(self.results)} checks passed[/cpip.dim]\n")
 
-
-# Need this import at the top for the async check
-import asyncio  # noqa: E402
