@@ -7,6 +7,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-Beta-yellow.svg)]()
+[![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)]()
 
 <p align="center">
   <i>Bring desktop-class Python performance and ML capabilities to Android.<br>Zero-config cloud offloading, hybrid execution, and instant package virtualization.</i>
@@ -34,6 +35,7 @@ It feels exactly like `pip`, but powered by the cloud.
 - 🚀 **Transparent Cloud Execution**: Write code normally (`import torch; torch.tensor([1])`). `cpip` handles the RPC serialization, cloud GPU execution, and result streaming in the background.
 - 📦 **Package Virtualization**: Uses container-inspired layering to stream and cache dependencies dynamically instead of extracting thousands of files locally.
 - 🏗️ **Automated Cross-Compilation**: Built-in cloud build farm that seamlessly cross-compiles complex C/C++/Rust extensions for `aarch64`.
+- 💻 **Hybrid/Bare-Metal Mode**: Supports deployment on Raspberry Pi and other low-power devices natively without Docker.
 - 🤖 **Agent-Ready Architecture**: Built-in orchestration tools allow local/cloud LLMs to autonomously execute PC-level tasks and browser automation via Termux.
 - 🛡️ **Zero-Trust Security**: End-to-end Ed25519 signature verification, isolated Docker sandboxing, and strict capability dropping.
 
@@ -54,13 +56,21 @@ pip install -e .[client]
 ```
 
 ### 2. Cloud Server Setup (Optional for self-hosting)
-If you want to run your own cloud backend for extreme privacy or custom GPU hardware:
 
+#### Docker (Recommended)
+If you have Docker and Docker Compose:
 ```bash
-# On your server (requires Docker & Docker Compose)
 git clone https://github.com/yashab-cyber/cpip.git
 cd cpip
 make docker-up
+```
+
+#### Bare-Metal (Raspberry Pi / PC)
+If you don't have Docker (e.g. Raspberry Pi), follow our [Bare-Metal Guide](docs/bare-metal-deployment.md).
+```bash
+# Core command for native builder:
+export CPIP_USE_DOCKER=false
+python3 -m builder.worker
 ```
 
 ---
@@ -115,6 +125,7 @@ For deep dives into the architecture, setup guides, and advanced usage, check ou
 
 - [System Architecture](docs/architecture.md)
 - [Complete Setup Guide](docs/setup.md)
+- [Bare-Metal Deployment](docs/bare-metal-deployment.md)
 - [Advanced Usage & Agents](docs/usage.md)
 
 ---
