@@ -8,6 +8,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-Beta-yellow.svg)]()
 [![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)]()
+[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?logo=discord&logoColor=white)](https://discord.com/channels/1474332964929146903/1504924702597189782)
 
 <p align="center">
   <i>Bring desktop-class Python performance and ML capabilities to Android.<br>Zero-config cloud offloading, hybrid execution, and instant package virtualization.</i>
@@ -127,6 +128,14 @@ For deep dives into the architecture, setup guides, and advanced usage, check ou
 - [Complete Setup Guide](docs/setup.md)
 - [Bare-Metal Deployment](docs/bare-metal-deployment.md)
 - [Advanced Usage & Agents](docs/usage.md)
+
+---
+
+## 💬 Community
+
+Join our Discord community to discuss ideas, get help, and collaborate on the project!
+
+[**Join the cpip Discord Server**](https://discord.com/channels/1474332964929146903/1504924702597189782)
 
 ---
 
