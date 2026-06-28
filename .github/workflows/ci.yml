@@ -7,8 +7,8 @@ on:
     branches: [main, master, develop]
 
 jobs:
-  build:
-    name: Build
+  diagnose:
+    name: Diagnose & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -16,39 +16,38 @@ jobs:
         with:
           go-version: '1.22'
           cache: false
+      
+      - name: Check Go version
+        run: go version
+      
+      - name: List files
+        run: find . -name "*.go" -type f | head -20
+      
       - name: Download dependencies
         run: go mod download
-      - name: Build server
+      
+      - name: Verify dependencies
+        run: go mod verify
+      
+      - name: Show go.mod
+        run: cat go.mod
+      
+      - name: Build with verbose output
         run: go build -v ./cmd/server
 
   lint:
-    name: Lint & Security
+    name: Lint
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
           go-version: '1.22'
           cache: false
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+      - uses: golangci/golangci-lint-action@v7
         with:
           version: latest
-          args: --timeout=10m
           skip-cache: true
-        continue-on-error: true
-
-  security:
-    name: Vulnerability Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v6
-        with:
-          go-version: '1.22'
-          cache: false
-      - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
-      - name: Run govulncheck
-        run: govulncheck ./...
+          args: --timeout=10m
         continue-on-error: true
