@@ -1,156 +1,72 @@
-<div align="center">
+# cpipUpgrade Go Service
 
-# ☁️ cpip
+Cloud-Powered Package Virtualization for Android Termux - Go Backend Service
 
-**Cloud-Powered Package Intelligence for Android Termux**
+## Overview
 
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-Beta-yellow.svg)]()
-[![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)]()
-[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?logo=discord&logoColor=white)](https://discord.com/channels/1474332964929146903/1504924702597189782)
+This is the Go service component of cpipUpgrade, providing:
+- HTTP API on port 5081
+- Health checks and metrics
+- OpenAPI specification
+- Flexible logging (zap/zerolog)
+- Prometheus metrics integration
+- Optional vulnerability scanning via govulncheck
 
-<p align="center">
-  <i>Bring desktop-class Python performance and ML capabilities to Android.<br>Zero-config cloud offloading, hybrid execution, and instant package virtualization.</i>
-</p>
+## Requirements
 
-</div>
+- Go 1.22 or later
 
----
-
-## ⚡ Overview
-
-`cpip` is a production-grade, cloud-assisted package virtualization system built specifically to solve the hardest problems of Python development on Android/Termux: failing native compilations, extreme memory limits, and lack of GPU acceleration.
-
-Instead of failing to install heavy dependencies like PyTorch, TensorFlow, or Playwright on your phone, `cpip`:
-1. **Virtualizes** the package locally without exhausting your storage.
-2. **Intercepts** imports transparently via `sys.meta_path` hooks.
-3. **Offloads** heavy computations to cloud GPU instances using a seamless JSON-RPC 2.0 WebSocket bridge.
-
-It feels exactly like `pip`, but powered by the cloud.
-
----
-
-## ✨ Features
-
-- 🚀 **Transparent Cloud Execution**: Write code normally (`import torch; torch.tensor([1])`). `cpip` handles the RPC serialization, cloud GPU execution, and result streaming in the background.
-- 📦 **Package Virtualization**: Uses container-inspired layering to stream and cache dependencies dynamically instead of extracting thousands of files locally.
-- 🏗️ **Automated Cross-Compilation**: Built-in cloud build farm that seamlessly cross-compiles complex C/C++/Rust extensions for `aarch64`.
-- 💻 **Hybrid/Bare-Metal Mode**: Supports deployment on Raspberry Pi and other low-power devices natively without Docker.
-- 🤖 **Agent-Ready Architecture**: Built-in orchestration tools allow local/cloud LLMs to autonomously execute PC-level tasks and browser automation via Termux.
-- 🛡️ **Zero-Trust Security**: End-to-end Ed25519 signature verification, isolated Docker sandboxing, and strict capability dropping.
-
----
-
-## 🚀 Installation
-
-### 1. Client Setup (Termux)
-Run these commands inside your Termux environment:
+## Building
 
 ```bash
-# Clone the repository
-git clone https://github.com/yashab-cyber/cpip.git
-cd cpip
-
-# Install the client-side tooling
-pip install -e .[client]
+go build -o server ./cmd/server
 ```
 
-### 2. Cloud Server Setup (Optional for self-hosting)
+## Running
 
-#### Docker (Recommended)
-If you have Docker and Docker Compose:
 ```bash
-git clone https://github.com/yashab-cyber/cpip.git
-cd cpip
-make docker-up
+# With default zap logger
+./server
+
+# With zerolog
+LOGGER=zerolog ./server
+
+# With autocheck enabled
+AUTOCHECK=true ./server
 ```
 
-#### Bare-Metal (Raspberry Pi / PC)
-If you don't have Docker (e.g. Raspberry Pi), follow our [Bare-Metal Guide](docs/bare-metal-deployment.md).
+## Endpoints
+
+- `GET /health` - Health check
+- `GET /metrics` - Prometheus metrics
+- `GET /openapi.yaml` - OpenAPI specification
+- `GET /items` - Items list
+
+## Development
+
+### Run tests
 ```bash
-# Core command for native builder:
-export CPIP_USE_DOCKER=false
-python3 -m builder.worker
+go test -v ./...
 ```
 
----
-
-## 💻 Usage
-
-`cpip` is designed to be a drop-in replacement for `pip`, with magical new capabilities.
-
-### Authentication
-Connect your Termux client to the cloud backend (dev mode bypasses auth locally):
+### Run linter
 ```bash
-cpip login
+golangci-lint run
 ```
 
-### Standard Installation
-Works exactly like pip, but handles complex dependencies better by fetching pre-built Android wheels:
+### Check for vulnerabilities
 ```bash
-cpip install requests pandas
+govulncheck ./...
 ```
 
-### Cloud-Accelerated Installation
-Force a package to use cloud offloading. This is perfect for heavy ML frameworks:
+## Docker
+
 ```bash
-cpip install --cloud torch
+docker build -t cpip-upgrade:latest .
+docker run -p 5081:5081 cpip-upgrade:latest
 ```
 
-### Interactive Hybrid Shell
-Launch the `cpip` REPL where your local device seamlessly communicates with the cloud backend:
-```bash
-cpip shell
-```
+## Environment Variables
 
-```python
-# Inside the cpip shell
->>> import torch # Loads as a remote proxy module instantly
->>> x = torch.randn(1000, 1000).cuda() # Executes on cloud GPU
->>> print(x.mean()) # Streams result back to Termux
-```
-
-### System Diagnostics
-Check the health of your Termux environment, cache sizes, and cloud connection:
-```bash
-cpip doctor
-cpip runtime
-```
-
----
-
-## 📚 Documentation
-
-For deep dives into the architecture, setup guides, and advanced usage, check out the `docs/` folder:
-
-- [System Architecture](docs/architecture.md)
-- [Complete Setup Guide](docs/setup.md)
-- [Bare-Metal Deployment](docs/bare-metal-deployment.md)
-- [Advanced Usage & Agents](docs/usage.md)
-
----
-
-## 💬 Community
-
-Join our Discord community to discuss ideas, get help, and collaborate on the project!
-
-[**Join the cpip Discord Server**](https://discord.com/channels/1474332964929146903/1504924702597189782)
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+- `LOGGER` - Logger backend: `zap` (default) or `zerolog`
+- `AUTOCHECK` - Enable automatic vulnerability checking: `true` or `false` (default: false)
