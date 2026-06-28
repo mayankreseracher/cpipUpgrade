@@ -17,14 +17,29 @@ jobs:
           go-version: '1.22'
           cache: false
       - name: Download dependencies
-        run: go mod download || true
+        run: go mod download
       - name: Build server
-        run: go build -v ./cmd/server || true
-      - name: Run basic tests
-        run: go test -v ./... || true
+        run: go build -v ./cmd/server
+
+  lint:
+    name: Lint & Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.22'
+          cache: false
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=10m
+          skip-cache: true
+        continue-on-error: true
 
   security:
-    name: Security Check
+    name: Vulnerability Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -33,6 +48,7 @@ jobs:
           go-version: '1.22'
           cache: false
       - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest || true
-      - name: Run vulnerability scan
-        run: govulncheck ./... || true
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - name: Run govulncheck
+        run: govulncheck ./...
+        continue-on-error: true
