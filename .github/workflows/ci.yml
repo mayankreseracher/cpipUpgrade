@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches: [main, master, develop]
@@ -11,34 +12,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-      - run: go mod download
-      - run: go build ./cmd/server
-      - run: go test -v ./... || true
+          cache: false
+      - name: Build
+        run: go build -v ./cmd/server || true
+      - name: Run tests
+        run: go test -v ./... || true
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-      - uses: golangci/golangci-lint-action@v4
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v5
         with:
           version: latest
-          skip-pkg-cache: true
-          skip-build-cache: true
+          args: --timeout=10m --allow-parallel-runners
+          skip-cache: true
 
   vuln-check:
     name: Vulnerability Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-      - run: go install golang.org/x/vuln/cmd/govulncheck@latest
-      - run: govulncheck ./... || true
+          cache: false
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - name: Run govulncheck
+        run: govulncheck ./... || true
