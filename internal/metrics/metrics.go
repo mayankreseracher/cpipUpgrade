@@ -2,35 +2,23 @@ package metrics
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
 var (
-	HTTPRequestsTotal = prometheus.NewCounterVec(
+	httpRequestsTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "http_requests_total",
-			Help: "Total number of HTTP requests",
+			Help: "Total HTTP requests",
 		},
-		[]string{"method", "endpoint", "status"},
-	)
-
-	HTTPRequestDuration = prometheus.NewHistogramVec(
-		prometheus.HistogramOpts{
-			Name:    "http_request_duration_seconds",
-			Help:    "HTTP request duration in seconds",
-			Buckets: prometheus.DefBuckets,
-		},
-		[]string{"method", "endpoint"},
+		[]string{"method", "path"},
 	)
 )
 
-// Init initializes all metrics
 func Init() {
-	prometheus.MustRegister(HTTPRequestsTotal)
-	prometheus.MustRegister(HTTPRequestDuration)
+	// Metrics are initialized via promauto
 }
 
-// RecordRequest records an HTTP request
-func RecordRequest(method, endpoint string, statusCode int, duration float64) {
-	HTTPRequestsTotal.WithLabelValues(method, endpoint, string(rune(statusCode))).Inc()
-	HTTPRequestDuration.WithLabelValues(method, endpoint).Observe(duration)
+func RecordRequest(method, path string) {
+	httpRequestsTotal.WithLabelValues(method, path).Inc()
 }
