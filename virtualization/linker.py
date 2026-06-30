@@ -70,7 +70,7 @@ class DynamicLinker:
             deps = []
             for line in result.stdout.splitlines():
                 parts = line.strip().split()
-                if parts and parts[0].endswith(".so") or ".so." in parts[0]:
+                if parts and (parts[0].endswith(".so") or ".so." in parts[0]):
                     deps.append(parts[0])
             return deps
         except Exception:

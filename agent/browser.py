@@ -28,13 +28,13 @@ class BrowserAgent:
         return {"success": result.success, "output": result.stdout, "error": result.stderr}
 
     async def fill_form(self, url: str, fields: dict[str, str]) -> dict:
-        field_code = "\n".join(f'    page.fill("{sel}", "{val}")' for sel, val in fields.items())
+        field_code = "\n".join(f'    page.fill({sel!r}, {val!r})' for sel, val in fields.items())
         script = f"""
 from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
-    page.goto("{url}")
+    page.goto({url!r})
 {field_code}
     print("Form filled")
     browser.close()

@@ -10,6 +10,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+import os
 import shutil
 import tarfile
 import tempfile
@@ -69,6 +70,13 @@ class LayerManager:
                 tmp.write(data)
                 tmp.flush()
                 with tarfile.open(tmp.name, "r:gz") as tar:
+                    # Safe extraction verification to prevent path traversal
+                    for member in tar.getmembers():
+                        target_path = os.path.join(str(layer_path), member.name)
+                        abs_dir = os.path.abspath(str(layer_path))
+                        abs_target = os.path.abspath(target_path)
+                        if os.path.commonpath([abs_dir, abs_target]) != abs_dir:
+                            raise Exception("Attempted Path Traversal in Tar File")
                     tar.extractall(path=str(layer_path))
 
         files = [str(p.relative_to(layer_path)) for p in layer_path.rglob("*") if p.is_file()]

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -22,12 +23,18 @@ class GPURuntime:
     def __init__(self):
         self._sandbox = Sandbox()
 
+    def _validate_method(self, method: str) -> None:
+        if not re.match(r"^[a-zA-Z0-9_\.]+$", method):
+            raise ValueError(f"Invalid method name: {method}")
+
     async def execute_torch(self, method: str, args: list, kwargs: dict) -> SandboxResult:
+        self._validate_method(method)
         code = self._build_torch_code(method, args, kwargs)
         config = SandboxConfig(gpu=True, image="pytorch/pytorch:latest", memory_limit="8g")
         return await self._sandbox.execute(code, config)
 
     async def execute_tensorflow(self, method: str, args: list, kwargs: dict) -> SandboxResult:
+        self._validate_method(method)
         code = self._build_tf_code(method, args, kwargs)
         config = SandboxConfig(gpu=True, image="tensorflow/tensorflow:latest-gpu", memory_limit="8g")
         return await self._sandbox.execute(code, config)

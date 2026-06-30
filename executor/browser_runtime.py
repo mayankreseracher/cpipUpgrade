@@ -28,7 +28,7 @@ import base64
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
-    page.goto("{url}")
+    page.goto({url!r})
     screenshot = page.screenshot()
     print(base64.b64encode(screenshot).decode())
     browser.close()
@@ -41,7 +41,7 @@ from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
-    page.goto("{url}")
+    page.goto({url!r})
     print(page.content())
     browser.close()
 """

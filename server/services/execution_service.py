@@ -13,6 +13,14 @@ from typing import Any
 from shared.models import ExecutionRequest, ExecutionResult, ExecutionStatus
 
 
+# Safe module allowlist to prevent arbitrary code execution / system commands
+ALLOWED_MODULES = {
+    "torch", "tensorflow", "jax", "cv2", "scipy", "numpy", "pandas",
+    "sklearn", "transformers", "diffusers", "onnxruntime", "playwright",
+    "math", "json"
+}
+
+
 class ExecutionService:
     """Remote execution management."""
 
@@ -52,6 +60,9 @@ class ExecutionService:
             raise ValueError(f"Invalid method: {req.method}")
 
         module_name = method_parts[0]
+        if module_name not in ALLOWED_MODULES:
+            raise ValueError(f"Module '{module_name}' is not allowed for remote execution")
+
         func_path = ".".join(method_parts[1:])
 
         # Dynamic import and execution

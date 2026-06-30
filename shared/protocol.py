@@ -78,6 +78,7 @@ class RPCMessage:
         error: dict[str, Any] | None = None,
         id: str | None = None,
         metadata: dict[str, Any] | None = None,
+        timestamp: float | None = None,
     ):
         self.type = type
         self.id = id or str(uuid.uuid4())
@@ -85,7 +86,7 @@ class RPCMessage:
         self.params = params or {}
         self.result = result
         self.error = error
-        self.timestamp = time.time()
+        self.timestamp = timestamp or time.time()
         self.metadata = metadata or {}
 
     def to_dict(self) -> dict[str, Any]:
@@ -129,6 +130,7 @@ class RPCMessage:
             result=data.get("result"),
             error=data.get("error"),
             metadata=data.get("metadata"),
+            timestamp=data.get("timestamp"),
         )
 
     @classmethod
@@ -158,7 +160,7 @@ def make_call(method: str, params: dict[str, Any] | None = None, **kwargs: Any) 
     return RPCMessage(
         type=MessageType.CALL,
         method=method,
-        params=params or kwargs,
+        params=params if params is not None else kwargs,
     )
 
 

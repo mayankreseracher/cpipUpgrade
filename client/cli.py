@@ -91,6 +91,8 @@ def install(
         await resolver.close()
         if failed:
             print_error(f"\n  {len(failed)} package(s) failed: {', '.join(failed)}")
+            if len(failed) < len(packages):
+                print_success(f"  {len(packages) - len(failed)} package(s) installed successfully")
             raise typer.Exit(1)
         print_success(f"\n  {len(packages)} package(s) installed successfully")
 
@@ -245,8 +247,10 @@ def list_packages():
     table = Table(title="Installed Packages", border_style="cpip.divider", header_style="cpip.table.header")
     table.add_column("Package", style="cpip.package")
     table.add_column("Version", style="cpip.version")
-    for dist in sorted(importlib.metadata.distributions(), key=lambda d: d.metadata["Name"].lower()):
-        table.add_row(dist.metadata["Name"], dist.metadata["Version"])
+    for dist in sorted(importlib.metadata.distributions(), key=lambda d: (d.metadata.get("Name") or "").lower()):
+        name = dist.metadata.get("Name", "Unknown")
+        version = dist.metadata.get("Version", "Unknown")
+        table.add_row(name, version)
     console.print()
     console.print(table)
     console.print()
@@ -282,12 +286,15 @@ def daemon(action: str = typer.Argument("status", help="start|stop|status")):
             return
         print_cloud("Starting cpip daemon...")
         import subprocess, os
-        subprocess.Popen(
-            [sys.executable, "-c", "from client.daemon import run_daemon; run_daemon()"],
-            start_new_session=True,
-            stdout=open(os.path.join(cfg.log_dir, "daemon.log"), "a"),
-            stderr=open(os.path.join(cfg.log_dir, "daemon.err"), "a"),
-        )
+        stdout_path = os.path.join(cfg.log_dir, "daemon.log")
+        stderr_path = os.path.join(cfg.log_dir, "daemon.err")
+        with open(stdout_path, "a") as out_f, open(stderr_path, "a") as err_f:
+            subprocess.Popen(
+                [sys.executable, "-c", "from client.daemon import run_daemon; run_daemon()"],
+                start_new_session=True,
+                stdout=out_f,
+                stderr=err_f,
+            )
         print_success("Daemon started")
     elif action == "stop":
         import os

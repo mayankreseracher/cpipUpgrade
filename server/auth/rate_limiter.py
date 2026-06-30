@@ -26,12 +26,16 @@ class RateLimiter:
     def __init__(self):
         self._windows: dict[str, list[float]] = defaultdict(list)
 
-    def _client_key(self, request: Request) -> str:
-        forwarded = request.headers.get("x-forwarded-for")
-        ip = forwarded.split(",")[0].strip() if forwarded else request.client.host if request.client else "unknown"
+    def _client_key(self, request: Request | None) -> str:
+        if request is None:
+            return "rate:unknown"
+        forwarded = request.headers.get("x-forwarded-for") if hasattr(request, "headers") else None
+        ip = forwarded.split(",")[0].strip() if forwarded else request.client.host if getattr(request, "client", None) else "unknown"
         return f"rate:{ip}"
 
-    def check(self, request: Request, limit: RateLimit) -> bool:
+    def check(self, request: Request | None, limit: RateLimit) -> bool:
+        if request is None:
+            return True
         key = self._client_key(request)
         now = time.time()
         window_start = now - limit.window_seconds
@@ -39,13 +43,21 @@ class RateLimiter:
         # Clean old entries
         self._windows[key] = [t for t in self._windows[key] if t > window_start]
 
+        # Periodically prune empty keys to prevent memory leak
+        if len(self._windows) > 1000:
+            for k in list(self._windows.keys()):
+                if not self._windows[k] or all(t <= window_start for t in self._windows[k]):
+                    self._windows.pop(k, None)
+
         if len(self._windows[key]) >= limit.requests:
             return False
 
         self._windows[key].append(now)
         return True
 
-    def remaining(self, request: Request, limit: RateLimit) -> int:
+    def remaining(self, request: Request | None, limit: RateLimit) -> int:
+        if request is None:
+            return limit.requests
         key = self._client_key(request)
         now = time.time()
         window_start = now - limit.window_seconds
@@ -62,8 +74,10 @@ BUILD_LIMIT = RateLimit(requests=10, window_seconds=60)
 EXEC_LIMIT = RateLimit(requests=50, window_seconds=60)
 
 
-def check_rate_limit(request: Request, limit: RateLimit = DEFAULT_LIMIT) -> None:
+def check_rate_limit(request: Request | None, limit: RateLimit = DEFAULT_LIMIT) -> None:
     """Check rate limit and raise 429 if exceeded."""
+    if request is None:
+        return
     if not rate_limiter.check(request, limit):
         retry_after = limit.window_seconds
         raise HTTPException(

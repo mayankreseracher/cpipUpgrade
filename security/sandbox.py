@@ -7,6 +7,7 @@ Defines Docker security options, seccomp profiles, and capability dropping.
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -96,8 +97,8 @@ class SandboxSecurityConfig:
 
     def to_docker_args(self) -> list[str]:
         args = []
-        if self.drop_capabilities:
-            args.extend(["--cap-drop", ",".join(self.drop_capabilities)])
+        for cap in self.drop_capabilities:
+            args.extend(["--cap-drop", cap])
         for cap in self.add_capabilities:
             args.extend(["--cap-add", cap])
         if self.read_only_rootfs:
@@ -105,7 +106,13 @@ class SandboxSecurityConfig:
         if self.no_new_privileges:
             args.append("--security-opt=no-new-privileges:true")
         
-        # In a real implementation, we'd save the seccomp profile to a file
-        # and pass --security-opt=seccomp=/path/to/profile.json
-        args.append("--security-opt=seccomp=unconfined") # Simplified for this demo
+        from shared.constants import CPIP_HOME
+        seccomp_path = os.path.join(CPIP_HOME, "seccomp.json")
+        try:
+            os.makedirs(os.path.dirname(seccomp_path), exist_ok=True)
+            with open(seccomp_path, "w") as f:
+                json.dump(self.seccomp_profile, f)
+            args.append(f"--security-opt=seccomp={seccomp_path}")
+        except Exception:
+            args.append("--security-opt=seccomp=unconfined")
         return args

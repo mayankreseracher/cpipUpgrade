@@ -90,14 +90,32 @@ class CpipConfig:
 
     # Computed paths
     home: str = CPIP_HOME
-    config_file: str = CONFIG_FILE
-    cache_dir: str = CACHE_DIR
-    wheels_dir: str = WHEELS_DIR
-    layers_dir: str = LAYERS_DIR
-    metadata_dir: str = METADATA_DIR
-    log_dir: str = LOG_DIR
-    venv_dir: str = VENV_DIR
-    auth_file: str = AUTH_FILE
+    config_file: str = ""
+    cache_dir: str = ""
+    wheels_dir: str = ""
+    layers_dir: str = ""
+    metadata_dir: str = ""
+    log_dir: str = ""
+    venv_dir: str = ""
+    auth_file: str = ""
+
+    def __post_init__(self):
+        if not self.config_file:
+            self.config_file = os.path.join(self.home, "config.toml")
+        if not self.cache_dir:
+            self.cache_dir = os.path.join(self.home, "cache")
+        if not self.wheels_dir:
+            self.wheels_dir = os.path.join(self.cache_dir, "wheels")
+        if not self.layers_dir:
+            self.layers_dir = os.path.join(self.cache_dir, "layers")
+        if not self.metadata_dir:
+            self.metadata_dir = os.path.join(self.cache_dir, "metadata")
+        if not self.log_dir:
+            self.log_dir = os.path.join(self.home, "logs")
+        if not self.venv_dir:
+            self.venv_dir = os.path.join(self.home, "envs")
+        if not self.auth_file:
+            self.auth_file = os.path.join(self.home, "auth.json")
 
 
 def ensure_directories(config: CpipConfig) -> None:

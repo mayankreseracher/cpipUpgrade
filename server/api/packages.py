@@ -12,6 +12,27 @@ from shared.models import PackageInfo
 router = APIRouter(prefix="/api/v1/packages", tags=["packages"])
 
 
+@router.get("/catalog")
+async def get_catalog(arch: str = Query("aarch64"), request: Request = None):
+    """Get full package catalog for sync."""
+    check_rate_limit(request, DEFAULT_LIMIT)
+    packages = await package_service.get_catalog(arch)
+    return {"packages": packages}
+
+
+@router.get("/")
+async def search_packages(
+    q: str = Query(""),
+    arch: str = Query("aarch64"),
+    limit: int = Query(50, le=100),
+    request: Request = None,
+):
+    """Search available packages."""
+    check_rate_limit(request, DEFAULT_LIMIT)
+    results = await package_service.search(q, arch, limit)
+    return {"packages": results, "total": len(results)}
+
+
 @router.get("/{name}", response_model=PackageInfo)
 async def get_package(
     name: str,
@@ -49,24 +70,3 @@ async def get_layers(name: str, request: Request = None):
     check_rate_limit(request, DEFAULT_LIMIT)
     layers = await package_service.get_layers(name)
     return {"package": name, "layers": layers}
-
-
-@router.get("/")
-async def search_packages(
-    q: str = Query(""),
-    arch: str = Query("aarch64"),
-    limit: int = Query(50, le=100),
-    request: Request = None,
-):
-    """Search available packages."""
-    check_rate_limit(request, DEFAULT_LIMIT)
-    results = await package_service.search(q, arch, limit)
-    return {"packages": results, "total": len(results)}
-
-
-@router.get("/catalog")
-async def get_catalog(arch: str = Query("aarch64"), request: Request = None):
-    """Get full package catalog for sync."""
-    check_rate_limit(request, DEFAULT_LIMIT)
-    packages = await package_service.get_catalog(arch)
-    return {"packages": packages}

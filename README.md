@@ -139,6 +139,23 @@ Join our Discord community to discuss ideas, get help, and collaborate on the pr
 
 ---
 
+## 🌐 Socials & Support
+
+Connect with the author or show your support for `cpip`!
+
+### Social Links
+- 📸 **Instagram**: [@yashabcyber](https://www.instagram.com/yashabcyber)
+- 🐦 **X (Twitter)**: [@Yashab_cyber](https://x.com/Yashab_cyber)
+- 💼 **LinkedIn**: [Yashab Alam](https://www.linkedin.com/in/yashab-alam)
+- 🧵 **Threads**: [@yashabcyber](https://www.threads.net/@yashabcyber)
+
+### Donation / Sponsorship
+If you find this project helpful and want to support its hosting costs and development, feel free to reach out or send support via:
+- ✉️ yashabalam9@gmail.com
+- ✉️ yashabalam707@gmail.com
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).

@@ -87,7 +87,31 @@ async def _session_cleanup_loop():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     """Main WebSocket endpoint for device connections."""
-    device_id = "unknown"
+    auth_header = websocket.headers.get("authorization")
+    token = None
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+    if not token:
+        token = websocket.query_params.get("token")
+
+    user = None
+    from server.config import server_config
+    if token:
+        if server_config.debug and token.startswith("dev_"):
+            user = {"sub": "dev-user", "device_id": token[4:], "tier": "dev"}
+        else:
+            from server.auth.jwt_handler import decode_token
+            user = decode_token(token)
+
+    if not user:
+        if server_config.debug:
+            user = {"sub": "anonymous", "device_id": "local", "tier": "dev"}
+        else:
+            # Reject connection by closing with policy violation code
+            await websocket.close(code=1008)
+            return
+
+    device_id = user.get("device_id", "unknown")
     try:
         conn = await hub.connect(device_id, websocket)
 
@@ -97,9 +121,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
                 # Handle session init
                 if msg.type == MessageType.SESSION_INIT:
-                    device_id = msg.params.get("device_id", device_id)
-                    # Re-register with correct device ID
-                    conn.device_id = device_id
+                    # Update metadata
                     conn.metadata = msg.params
                     from shared.protocol import make_notification
                     await websocket.send_text(
