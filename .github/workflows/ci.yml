@@ -1,23 +1,32 @@
-    jobs:
-      build:
-        name: Build
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v6
-          
-          - uses: actions/setup-go@v6
-            with:
-              go-version: '1.22'
-              cache: false
+name: CI
 
-          - name: Tidy Dependencies
-            run: go mod tidy
-            working-directory: . # Change to your subfolder (e.g., ./cmd/server) if go.mod is nested
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
 
-          - name: Build Server
-            run: go build -v ./cmd/server
-            # Removed "|| true" so you can actually see real compilation errors if they happen
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.22'
+          cache: false
 
-          - name: Test Suite
-            run: go test -v ./...
-            
+      - name: Tidy Dependencies
+        run: go mod tidy
+        # If your go.mod is in a subfolder (e.g., cmd/server), change '.' to './cmd/server'
+        working-directory: . 
+
+      - name: Build Server
+        run: go build -v ./cmd/server
+        # Removed "|| true" so that if there is a real syntax error, the logs will show it clearly
+
+      - name: Test Suite
+        run: go test -v ./...
+        
