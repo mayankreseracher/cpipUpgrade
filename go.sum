@@ -1,7 +1,7 @@
 github.com/beorn7/perks v1.0.1 h1:VlbKKohln15ztc0fQ4+NvN3NzIQm68CI915wn4mmQo=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU36Q+wweIlhh4PqJ+9EYiRn/9BqoChv5DqQ8=
 github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 h1:jWpV7xVxm9jsYoJog2Cn3Vq2xo/5VvCFFpMwEyU/W0=
-github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0/go.mod h1:QUyp042oQthUoa9bqDv0ER0w/0A8z8tqpreviousError+Hv=
+github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0/go.mod h1:QUyp042oQthUoa9bqDv0ER0w/0A8z8tqpIoN+Nv4=
 github.com/prometheus/client_golang v1.18.0 h1:HzFfmkOzH5Q8L8G+kSJKUx5dtG87g8gpYeCJ7PvQcY=
 github.com/prometheus/client_golang v1.18.0/go.mod h1:T+GXkCk5wSJyks4ZqX8FWUI31C3LqYXIFHQnhaSetA=
 github.com/prometheus/client_model v0.5.0 h1:VQw34cSfwJ+3ydCY4Flterq+tMsRBydBBQVqomjLmm=
