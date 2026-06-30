@@ -10,7 +10,7 @@ github.com/prometheus/common v0.45.0 h1:2BGz0eBc2cgkJF+BHjwwAU3l2mWHBdmub2dico1M
 github.com/prometheus/common v0.45.0/go.mod h1:Y1VH7Ij7yis82L/6Z2TSRO6j40SzvvUIvMyhSjWSMA=
 github.com/prometheus/procfs v0.12.0 h1:jluTtNjOIcj200wFF8EzkZerglV+feGLTe/OvCXqLw=
 github.com/prometheus/procfs v0.12.0/go.mod h1:pcuDEFsWcUx7aIkmEX7Aeviscx2qfnqQLlnq0PjeM4=
-github.com/rs/zerolog v1.31.0 h1:FcTR3NnLWW+NnTwI0aSk8Kx7rNsoxR7YxwywKPYo94=
+github.com/rs/zerolog v1.31.0 h1:FcTR3NnLWW+NnTwwhFWiJSZr4ECLpqCm6QsEnyvbV4A=
 github.com/rs/zerolog v1.31.0/go.mod h1:/7mMQcxiEkNosFmXMClI6atcWGRdQZiWvIel7jN3IM=
 go.uber.org/multierr v1.11.0 h1:blXXJkSGoesOQYzxkNnt/e0DlVV51LlqJE5SixG5qE=
 go.uber.org/multierr v1.11.0/go.mod h1:20+QtiLqy0Nd6hsO7l36gvSgQFAe/DjsE2UMS8NOR8=
