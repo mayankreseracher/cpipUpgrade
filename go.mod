@@ -7,11 +7,6 @@ require (
 	go.uber.org/zap v1.26.0
 	github.com/rs/zerolog v1.31.0
 )
-require (
-	github.com/prometheus/client_golang v1.18.0
-	go.uber.org/zap v1.26.0
-	github.com/rs/zerolog v1.31.0
-)
 
 indirect (
 	go.uber.org/multierr v1.11.0
