@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: [main, master, develop]
@@ -7,18 +6,24 @@ on:
     branches: [main, master, develop]
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v4
         with:
           go-version: '1.22'
-          cache: false
-      - name: Tidy Dependencies
-        run: go mod tidy
-      - name: Build Server
-        run: go build -v -o ./bin/server ./cmd/server
-      - name: Test Suite
-        run: go test -v ./...
+      - run: go mod tidy
+      - run: go build -v ./cmd/server
+      - run: go test -v ./...
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - uses: golangci/golangci-lint-action@v4
