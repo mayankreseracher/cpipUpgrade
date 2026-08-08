@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: cpipUpgrade Service API
+  version: 1.0.0
+  description: Cloud-Powered Package Virtualization for Android Termux
+  contact:
+    name: cpipUpgrade Contributors
+
+servers:
+  - url: http://localhost:5081
+    description: Local development server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the current health status of the service
+      operationId: getHealth
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      description: Exposes Prometheus metrics for monitoring
+      operationId: getMetrics
+      tags:
+        - Monitoring
+      responses:
+        '200':
+          description: Prometheus metrics in text format
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /items:
+    get:
+      summary: List items
+      description: Returns a list of items
+      operationId: listItems
+      tags:
+        - Items
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Monitoring
+    description: Monitoring and metrics endpoints
+  - name: Items
+    description: Items management endpoints
