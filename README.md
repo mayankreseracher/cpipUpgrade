@@ -171,7 +171,7 @@ correlation\_matrix = portfolio.corr()  # 10k×10k—too large for Termux RAM
 optimal\_weights = linprog(objective, constraints=correlation\_matrix)
 CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
 
-```python
+---
 
 ### 3. Edge AI Inference Pipeline
 Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
@@ -190,7 +190,7 @@ model = YOLO('yolov8s.pt')  # Quantized 30MB model cached locally after first fe
 results = model.predict(source=0, conf=0.5)  # <30ms per frame
 CPIP Benefit: Model updates pushed server-side without redeploying edge binaries. Enables A/B testing of inference versions across fleet.
 
-
+---
 
 ### 4. Data Science Exploration Without Setup Friction
 
@@ -213,7 +213,7 @@ pipeline = Pipeline([
 ])
 CPIP Benefit: Explore ML without gigabytes of local storage; pay only for compute consumed.
 
-
+---
 
 ## 5. Batch Processing with Hybrid Execution
 
