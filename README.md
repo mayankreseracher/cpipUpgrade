@@ -207,12 +207,12 @@ pipeline = Pipeline([
 ])
 CPIP Benefit: Explore ML without gigabytes of local storage; pay only for compute consumed.
 
-5. Batch Processing with Hybrid Execution
+## 5. Batch Processing with Hybrid Execution
 Scenario: Processing 1M records locally with CPU-intensive operations
 
 python
 
-##5 Technical Stack
+Technical Stack
 Prerequisites
 Component       Version Purpose
 Go      1.22+   Service backend, HTTP API
