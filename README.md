@@ -152,7 +152,7 @@ predictions = model(preprocess(frame))
 
 CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
 
-
+---
 
 ### 2. Financial Modeling with Constrainedprocessed
 
