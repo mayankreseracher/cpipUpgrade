@@ -171,7 +171,7 @@ correlation\_matrix = portfolio.corr()  # 10k×10k—too large for Termux RAM
 optimal\_weights = linprog(objective, constraints=correlation\_matrix)
 CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
 
-
+```python
 
 ### 3. Edge AI Inference Pipeline
 Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
