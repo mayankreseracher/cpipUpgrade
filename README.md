@@ -178,7 +178,6 @@ Scenario: Computer vision on autonomous edge device (robot/drone) with latency c
 
 ```python
 
-
 # Training happens once in cloud (days of GPU time)
 # Inference deployed at edge via CPIP
 
@@ -193,12 +192,11 @@ CPIP Benefit: Model updates pushed server-side without redeploying edge binaries
 
 
 
-## 4. Data Science Exploration Without Setup Friction
+### 4. Data Science Exploration Without Setup Friction
 
 Scenario: Researcher running exploratory data analysis on Termux without installing heavy dependencies
 
 ```python
-
 
 import pandas as pd
 import scikit-learn  # Full 80MB ML ecosystem—streamed on-demand
@@ -246,11 +244,10 @@ CPIP Benefit: Maximize local compute (low cost) while offloading only bottleneck
 
 
 
-6. Security: Vulnerability Scanning in CI/CD
+### 6. Security: Vulnerability Scanning in CI/CD
 Scenario: Termux-based CI runner checking Go dependencies for CVEs
 
 bash
-
 
 # Integrated with Go service health checks
 GET /health -> includes govulncheck results
@@ -277,7 +274,6 @@ Imported as library:
 
 python
 
-
 from cpip.client import CloudProxy
 proxy = CloudProxy(service\_url='http://localhost:5081')
 Running
@@ -292,7 +288,6 @@ bash
 python3 -c "import torch; print(torch.\_\_file\_\_)"  # Proxied to cloud
 Production Mode
 bash
-
 
 # With zerolog (lower allocation overhead)
 LOGGER=zerolog ./server
