@@ -134,7 +134,7 @@ CPIP decouples training from inference via a two-tier system:
 
 ## High-Impact Use Cases
 
-### 1. Real-Time Machine Learning on Mobile
+###  🎯 1. Real-Time Machine Learning on Mobile
 
 **Scenario:** Mobile security app requiring sub-50ms threat detection on video frames
 
@@ -154,7 +154,7 @@ CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financi
 
 ---
 
-### 2. Financial Modeling with Constrainedprocessed
+###  📊 2. Financial Modeling with Constrainedprocessed
 
 Scenario: Risk portfolio analysis requiring massive matrix operations; Termux CPU insufficient
 
@@ -173,7 +173,7 @@ CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financi
 
 ---
 
-### 3. Edge AI Inference Pipeline
+### 🔐 3. Edge AI Inference Pipeline
 Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
 
 ```python
