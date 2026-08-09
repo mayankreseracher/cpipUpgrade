@@ -138,7 +138,7 @@ CPIP decouples training from inference via a two-tier system:
 <summary><h2>
 ###  🎯 1. Real-Time Machine Learning on Mobile</h2></summary>
 
-**Scenario:** Mobile security app requiring sub-50ms threat detection on video frames
+Scenario:Mobile security app requiring sub-50ms threat detection on video frames
 
 ```python
 import cv2
@@ -177,8 +177,10 @@ CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financi
 
 ---
 
+<details>
+<summary><h4>
 ### 🔐 3. Edge AI Inference Pipeline
-Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
+Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints</h4></summary>
 
 ```python
 
