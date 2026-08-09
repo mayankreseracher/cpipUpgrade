@@ -158,7 +158,7 @@ CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financi
 
 Scenario: Risk portfolio analysis requiring massive matrix operations; Termux CPU insufficient
 
-python
+```python
 
 import numpy as np
 from scipy.optimize import linprog  # Sparse solver—offloaded
@@ -176,7 +176,7 @@ CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financi
 ### 3. Edge AI Inference Pipeline
 Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
 
-python
+```python
 
 
 # Training happens once in cloud (days of GPU time)
@@ -197,7 +197,7 @@ CPIP Benefit: Model updates pushed server-side without redeploying edge binaries
 
 Scenario: Researcher running exploratory data analysis on Termux without installing heavy dependencies
 
-python
+```python
 
 
 import pandas as pd
@@ -221,7 +221,7 @@ CPIP Benefit: Explore ML without gigabytes of local storage; pay only for comput
 
 Scenario: Processing 1M records locally with CPU-intensive operations
 
-python
+```python
 
 Technical Stack
 Prerequisites
