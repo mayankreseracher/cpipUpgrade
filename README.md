@@ -106,14 +106,10 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-=======
-- `LOGGER` - Logger backend: `zap` (default) or `zerolog`
-- `AUTOCHECK` - Enable automatic vulnerability checking: `true` or `false` (default: false)
->>>>>>> upgrade/add-go-service
 
 # CPIP: Cloud-Powered Package Virtualization
 
-**Hybrid microservice architecture** for accelerated Python workloads on resource-constrained edge devices (Android Termux). Combines **Go HTTP service** for cloud offloading with **Python runtime** for local execution and module proxying.
+**Hybrid microservice architecture** for accelerated Python workloads on resource-constrained edge devices (Android Termux). Combines **Go HTTP service** for cloud offloading with **Python runtime** components for transparent module proxying and execution orchestration.
 
 ---
 
@@ -134,11 +130,12 @@ CPIP decouples training from inference via a two-tier system:
 
 ## High-Impact Use Cases
 
-<details>
-<summary><h2>
-###  🎯 1. Real-Time Machine Learning on Mobile</h2></summary>
+Below are separated, self-contained use cases demonstrating CPIP's capabilities. Each use case is independent.
 
-Scenario:Mobile security app requiring sub-50ms threat detection on video frames
+<details>
+<summary><h3>1. Real-Time Machine Learning on Mobile</h3></summary>
+
+Scenario: Mobile security app requiring sub-50ms threat detection on video frames
 
 ```python
 import cv2
@@ -149,276 +146,182 @@ from torchvision import models
 model = models.resnet50(pretrained=True).cuda()
 
 # Inference offloaded; only 1-2MB classification results returned
-frame = cv2.imread('/sdcard/camera\_frame.jpg')
+frame = cv2.imread('/sdcard/camera_frame.jpg')
 predictions = model(preprocess(frame))
+```
 
-CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
+CPIP Benefit: Execute complex ML inference without storing large models locally; minimal result payloads.
 
----
+</details>
 
 <details>
-<summary><h3>
-###  📊 2. Financial Modeling with Constrainedprocessed</h3></summary>
+<summary><h3>2. Financial Modeling with Constrained Devices</h3></summary>
 
 Scenario: Risk portfolio analysis requiring massive matrix operations; Termux CPU insufficient
 
 ```python
-
 import numpy as np
 from scipy.optimize import linprog  # Sparse solver—offloaded
 import pandas as pd
 
-portfolio = pd.read\_csv('/sdcard/positions.csv')  # 10k instruments
-correlation\_matrix = portfolio.corr()  # 10k×10k—too large for Termux RAM
+portfolio = pd.read_csv('/sdcard/positions.csv')  # 10k instruments
+correlation_matrix = portfolio.corr()  # 10k×10k—too large for Termux RAM
 
 # Offload sparse linear programming to cloud CPU cluster
-optimal\_weights = linprog(objective, constraints=correlation\_matrix)
-CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
+optimal_weights = linprog(objective, constraints=correlation_matrix)
+```
 
----
+CPIP Benefit: Run large numeric workloads on cloud resources while using Termux as the thin client.
+
+</details>
 
 <details>
-<summary><h4>
-### 🔐 3. Edge AI Inference Pipeline
-Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints</h4></summary>
+<summary><h3>3. Edge AI Inference Pipeline</h3></summary>
+
+Scenario: Computer vision on autonomous edge device (robot/drone) with latency constraints
 
 ```python
-
-# Training happens once in cloud (days of GPU time)
-# Inference deployed at edge via CPIP
-
-from ultralytics import YOLO  # Object detection
+from ultralytics import YOLO
 
 model = YOLO('yolov8s.pt')  # Quantized 30MB model cached locally after first fetch
 
-## Real-time detection loop—inference cached, only new frames processed
-
+# Real-time detection loop—inference cached, only new frames processed
 results = model.predict(source=0, conf=0.5)  # <30ms per frame
-CPIP Benefit: Model updates pushed server-side without redeploying edge binaries. Enables A/B testing of inference versions across fleet.
+```
 
----
+CPIP Benefit: Push model updates server-side without redeploying edge binaries; enables fleet A/B testing.
 
-### 4. Data Science Exploration Without Setup Friction
+</details>
+
+<details>
+<summary><h3>4. Data Science Exploration Without Setup Friction</h3></summary>
 
 Scenario: Researcher running exploratory data analysis on Termux without installing heavy dependencies
 
 ```python
-
 import pandas as pd
-import scikit-learn  # Full 80MB ML ecosystem—streamed on-demand
-import plotly
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.ensemble import RandomForestClassifier
 
 # All computationally intensive libraries proxied to cloud
-# Local device only runs interactive logic
 
-data = pd.read\_csv('/sdcard/experiment.csv')
+data = pd.read_csv('/sdcard/experiment.csv')
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
-    ('pca', PCA(n\_components=50)),  # Offloaded
-    ('classifier', RandomForestClassifier(n\_estimators=500))  # Cloud
+    ('pca', PCA(n_components=50)),  # Offloaded
+    ('classifier', RandomForestClassifier(n_estimators=500))  # Cloud
 ])
+```
+
 CPIP Benefit: Explore ML without gigabytes of local storage; pay only for compute consumed.
 
----
+</details>
 
-## 5. Batch Processing with Hybrid Execution
+<details>
+<summary><h3>5. Batch Processing with Hybrid Execution</h3></summary>
 
 Scenario: Processing 1M records locally with CPU-intensive operations
 
 ```python
-
-Technical Stack
-Prerequisites
-Component       Version Purpose
-Go      1.22+   Service backend, HTTP API
-Python  3.8+    Client/runtime libraries
-Docker  Latest  Containerization & multi-stage builds
-
-
 # Local filtering and preprocessing (fast on ARM)
-data = read\_local\_data()
+data = read_local_data()
 filtered = data[data['value'] > threshold]
 
 # Batch the expensive computations, send to cloud
-import cpip\_batch
-
-results = cpip\_batch.map(expensive\_ml\_transform, filtered, batch\_size=1000)
+import cpip_batch
+results = cpip_batch.map(expensive_ml_transform, filtered, batch_size=1000)
 # Streams results back incrementally; local aggregation
-
 aggregated = reduce(lambda x, y: x + y, results)
-CPIP Benefit: Maximize local compute (low cost) while offloading only bottlenecks; reduces network round-trips through batching.
+```
 
+CPIP Benefit: Maximize local compute while offloading bottlenecks; batching reduces network round-trips.
 
+</details>
 
-### 6. Security: Vulnerability Scanning in CI/CD
+<details>
+<summary><h3>6. Security: Vulnerability Scanning in CI/CD</h3></summary>
+
 Scenario: Termux-based CI runner checking Go dependencies for CVEs
 
-bash
-
+```bash
 # Integrated with Go service health checks
-GET /health -> includes govulncheck results
-GET /metrics -> tracks vulnerability trends
-
-# Python agent monitors upstream package updates
+# GET /health -> includes govulncheck results
+# GET /metrics -> tracks vulnerability trends
 cpip security --check-interval 24h --report email
+```
+
 CPIP Benefit: Continuous compliance monitoring without external SaaS dependency.
 
-Technical Stack
+</details>
+
+---
+
+## Technical Stack
+
 Prerequisites
-Component       Version Purpose
-Go      1.22+   Service backend, HTTP API
-Python  3.8+    Client/runtime libraries
-Docker  Latest  Containerization & multi-stage builds
-Building
+
+| Component | Version | Purpose |
+|---|---:|---|
+| Go | 1.22+ | Service backend, HTTP API |
+| Python | 3.8+ | Client/runtime libraries |
+| Docker | Latest | Containerization & multi-stage builds |
+
+## Building & Running (concise)
+
 Go Service
-bash
 
-
+```bash
 go build -o server ./cmd/server
-Python Runtime
-Imported as library:
+```
 
-python
+Python Runtime (imported as library)
 
+```python
 from cpip.client import CloudProxy
-proxy = CloudProxy(service\_url='http://localhost:5081')
-Running
+proxy = CloudProxy(service_url='http://localhost:5081')
+```
+
 Development Mode
-bash
 
-
+```bash
 # Terminal 1: Go service with default zap logger
 ./server
 
 # Terminal 2: Python client (automatic discovery)
-python3 -c "import torch; print(torch.\_\_file\_\_)"  # Proxied to cloud
+python3 -c "import torch; print(torch.__file__)"  # Proxied to cloud
+```
+
 Production Mode
-bash
 
-# With zerolog (lower allocation overhead)
+```bash
 LOGGER=zerolog ./server
-
-# With automatic vulnerability checks
 AUTOCHECK=true ./server
+LOG_LEVEL=debug ./server
+```
 
-# Custom log level
-LOG\_LEVEL=debug ./server
-API Specification
-Core Endpoints
-Method  Path    Purpose
-GET     /health Service liveness + system metrics
-GET     /metrics        Prometheus format (scrape every 30s)
-GET     /openapi.yaml   Schema for code generation
-GET     /items  Available offloadable packages
-POST    /offload        Execute function on cloud
-Health Check Response
-json
+## API Specification (core endpoints)
 
+- GET /health — Service liveness + system metrics
+- GET /metrics — Prometheus format
+- GET /openapi.yaml — Schema for code generation
+- GET /items — Available offloadable packages
+- POST /offload — Execute function on cloud
 
-{
-  "status": "healthy",
-  "uptime\_seconds": 3600,
-  "vulnerabilities\_found": 0,
-  "cache\_hit\_rate": 0.87,
-  "avg\_latency\_ms": 45
-}
-Deployment
-Docker (Single Service)
-bash
+## Monitoring & Observability
 
+Prometheus metrics exposed at /metrics (examples: cpip_offload_latency_ms, cpip_cache_hits_total, cpip_vulnerabilities_detected)
 
-docker build -t cpip-server:latest .
-docker run -p 5081:5081 \\
-  -e LOGGER=zerolog \\
-  -e AUTOCHECK=true \\
-  cpip-server:latest
-Multi-Container (Recommended)
-See docker-compose.yml for orchestrated Go service + Python client setup.
+## Troubleshooting
 
-Monitoring & Observability
-Prometheus Metrics
-bash
+- High latency: check network/connectivity and increase batch size
+- Cache misses: inspect /metrics cache_hit_rate and tune L1 cache size
+- Out of memory: adjust offload strategy to move workloads cloud-side
 
+## Project Structure
 
-# Scrape configuration
-curl http://localhost:5081/metrics | grep cpip_
-Key metrics:
-
-cpip_offload_latency_ms — P50, P95, P99 percentiles
-cpip_cache_hits_total — Cache efficiency tracking
-cpip_vulnerabilities_detected — CVE count from govulncheck
-Health Checks
-bash
-
-
-# Liveness probe (Kubernetes)
-curl -f http://localhost:5081/health || exit 1
-
-# Readiness check (includes dependency verification)
-curl -f http://localhost:5081/health?detailed=true || exit 1
-Performance Tuning
-Offload Decision Algorithm
-Decide locally vs. cloud based on:
-
-Module size > 50MB → cloud
-Compute complexity (cyclomatic complexity) → cloud
-Local cache hit → local
-Network latency < 30ms → offload
-Cost-per-compute < local ARM cost → cloud
-Caching Strategy
-L1 Cache (local): 500MB limit, LRU eviction
-L2 Cache (cloud): Persistent, versioned by hash
-TTL: 24h default; configurable per module
-Development
-Testing
-bash
-
-
-# Go tests
-go test -v -race -timeout 30s ./...
-
-# Linting
-golangci-lint run --deadline 5m
-
-# Coverage
-go test -cover ./... | grep -E '^(ok|FAIL|coverage)'
-Security Scanning
-bash
-
-
-govulncheck ./...  # Detects known CVEs in dependencies
-Contributing
-Fork and create feature branch: git checkout -b feature/llm-offloading
-Test thoroughly: go test ./... && pytest tests/
-Commit with atomic changes: git commit -m 'Add feature'
-Push: git push origin feature/llm-offloading
-Open PR with benchmark results if performance-critical
-See CONTRIBUTING.md and CODE_OF_CONDUCT.md for guidelines.
-
-Troubleshooting
-High Latency (>500ms)
-Check network connectivity to cloud backend:
-
-bash
-
-
-curl -w "Time: %{time\_total}s\n" http://localhost:5081/health
-Increase batch size to amortize network overhead_
-
-Cache Misses
-bash
-
-
-# Monitor cache efficiency
-curl http://localhost:5081/metrics | grep cache\_hit\_rate
-
-# If <70%, consider increasing L1 cache size or module pinning
-Out of Memory (Local)
-Use cpip.offload_strategy='aggressive' to move more workloads cloud-side.
-
-Project Structure
-
-
+```
 ├── cmd/server/          # Go service entry point
 ├── api/                 # OpenAPI definitions, handlers
 ├── pkg/
@@ -440,10 +343,14 @@ Project Structure
 ├── pyproject.toml       # Python packaging
 ├── Dockerfile           # Multi-stage build
 └── docker-compose.yml   # Local dev environment
+```
+
 License
+
 MIT — see LICENSE for full terms.
 
 Contact
-For technical questions, issues, or collaboration:                
-GitHub Issues: Report bugs with reproducible examples
-Discussions: Architecture decisions, design proposals 
+
+For technical questions, issues, or collaboration:
+- GitHub Issues: Report bugs with reproducible examples
+- Discussions: Architecture decisions, design proposals
