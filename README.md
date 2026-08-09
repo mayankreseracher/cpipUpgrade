@@ -152,11 +152,11 @@ predictions = model(preprocess(frame))
 
 CPIP Benefit: Avoid expensive enterprise risk platforms; execute complex financial computations on-demand at fraction of cloud licensing cost.
 
-### 2. Financial Modeling with Constrained Compute
+### 2. Financial Modeling with Constrainedprocessed
+
 Scenario: Risk portfolio analysis requiring massive matrix operations; Termux CPU insufficient
 
 python
-
 
 import numpy as np
 from scipy.optimize import linprog  # Sparse solver—offloaded
@@ -182,11 +182,13 @@ from ultralytics import YOLO  # Object detection
 
 model = YOLO('yolov8s.pt')  # Quantized 30MB model cached locally after first fetch
 
-## 4.Real-time detection loop—inference cached, only new frames processed
+## Real-time detection loop—inference cached, only new frames processed
+
 results = model.predict(source=0, conf=0.5)  # <30ms per frame
 CPIP Benefit: Model updates pushed server-side without redeploying edge binaries. Enables A/B testing of inference versions across fleet.
 
-4. Data Science Exploration Without Setup Friction
+## 4. Data Science Exploration Without Setup Friction
+
 Scenario: Researcher running exploratory data analysis on Termux without installing heavy dependencies
 
 python
@@ -208,6 +210,7 @@ pipeline = Pipeline([
 CPIP Benefit: Explore ML without gigabytes of local storage; pay only for compute consumed.
 
 ## 5. Batch Processing with Hybrid Execution
+
 Scenario: Processing 1M records locally with CPU-intensive operations
 
 python
