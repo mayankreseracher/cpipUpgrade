@@ -1,0 +1,18 @@
+apiVersion: v2
+name: cpip
+description: Cloud-Powered Package Virtualization for Android Termux
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - cpip
+  - cloud
+  - termux
+  - android
+  - package-virtualization
+maintainers:
+  - name: cpip contributors
+    email: support@cpip.dev
+home: https://github.com/mayankreseracher/cpipUpgrade
+sources:
+  - https://github.com/mayankreseracher/cpipUpgrade
