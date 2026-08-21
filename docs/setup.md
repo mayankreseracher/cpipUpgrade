@@ -11,7 +11,7 @@
 2. Clone and install the `cpip` client:
    ```bash
    git clone https://github.com/mayankreseracher/cpipUpgrade.git
-   cd cpip 
+   cd cpipUpgrade
    pip install -e .[client]
    ```
 
