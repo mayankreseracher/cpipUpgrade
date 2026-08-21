@@ -32,8 +32,8 @@ Clone the CPIP repository to your server and set up a virtual environment to avo
 
 ```bash
 # Clone the repository
-git clone https://github.com/yashab-cyber/cpip.git
-cd cpip
+git clone https://github.com/mayankreseracher/cpipUpgrade.git
+cd cpipUpgrade
 
 # Create and activate a virtual environment
 python3 -m venv venv
@@ -126,8 +126,8 @@ pkg install python git
 Clone the CPIP repository and install the client dependencies:
 
 ```bash
-git clone https://github.com/yashab-cyber/cpip.git
-cd cpip
+git clone https://github.com/mayankreseracher/cpipUpgrade.git
+cd cpipUpgrade
 pip install -e .[client]
 ```
 
