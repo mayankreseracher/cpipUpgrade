@@ -10,8 +10,8 @@
 
 2. Clone and install the `cpip` client:
    ```bash
-   git clone https://github.com/yashab-cyber/cpip.git
-   cd cpip
+   git clone https://github.com/mayankreseracher/cpipUpgrade.git
+   cd cpip 
    pip install -e .[client]
    ```
 
