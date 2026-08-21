@@ -33,8 +33,8 @@ If you are hosting the backend yourself, you need a Linux server with Docker and
 
 1. Clone the repository on your server:
    ```bash
-   git clone https://github.com/yashab-cyber/cpip.git
-   cd cpip
+   git clone https://github.com/mayankreseracher/cpipUpgrade.git
+   cd cpipUpgrade
    ```
 
 2. Configure environment variables. You can edit the `docker-compose.yml` or create a `.env` file:
