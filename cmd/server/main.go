@@ -54,7 +54,7 @@ func main() {
 	// Run optional autocheck if enabled
 	if os.Getenv("AUTOCHECK") == "true" {
 		log.Info("Running autocheck for vulnerabilities")
-		if err := autocheck.Run(context.Background(), log); err != nil {
+		if err := autocheck.Run(context.Background()); err != nil {
 			log.Error("autocheck failed", err)
 		}
 	}
